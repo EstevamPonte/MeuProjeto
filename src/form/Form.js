@@ -34,7 +34,7 @@ class Form extends Component {
    addInfoCard() {
       return this.state.infoCarros.map((carro) => <MyCard
          title={carro.title} description={carro.description}
-         key={carro.id} />)
+         key={carro.id} id={carro.id}/>)
    }
 
    _handleChange(event){
