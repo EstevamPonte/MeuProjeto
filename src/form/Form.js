@@ -21,20 +21,21 @@ class Form extends Component {
       axios.get('http://localhost:3000/importants')
          .then(resp => {
             this.setState({infoCarros: resp.data})
+            this.addInfoCard()
          })
          .catch(error => console.log('errouu'))
    }
 
    _postInfo(carro) {
       axios.post('http://localhost:3000/importants', carro)
-         .then(resp => console.log(carro))
+         .then(resp => this._serchInfo())
          .catch(error => console.log (error))
    }
 
    addInfoCard() {
       return this.state.infoCarros.map((carro) => <MyCard
          title={carro.title} description={carro.description}
-         key={carro.id} id={carro.id}/>)
+         key={carro.id} id={carro.id} onDelete={this.handleDelete.bind(this)}/>)
    }
 
    _handleChange(event){
@@ -51,8 +52,12 @@ class Form extends Component {
          description: this.state.description,
       }
       this._postInfo(carro)
-      this._serchInfo()
    }
+
+   handleDelete(id) {
+      axios.delete( 'http://localhost:3000/importants/' + id)
+          .then(resp => this._serchInfo())
+  }
 
    render() {
       const infoCard = this.addInfoCard()

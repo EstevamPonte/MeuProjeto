@@ -1,19 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios'
 
 class MyCard extends Component {
     
-    deletar(id) {
-        axios.delete( 'http://localhost:3000/importants/' + id)
-            .then(resp => console.log('oii'))
-    }
 
-    removendo() {
-       
-        let id = this.props.id
-        console.log (id)
-        this.deletar(id)
-        
+    removendo(event) {
+        event.preventDefault();
+        this.props.onDelete(this.props.id) 
     }
 
     render() {
