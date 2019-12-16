@@ -11,6 +11,8 @@ class Form extends Component {
          title: "",
          description: ""
       }
+      this._hendleSubmit = this._hendleSubmit.bind(this)
+      this.hendleKey = this.hendleKey.bind(this)
    }
 
    componentDidMount() {
@@ -18,7 +20,7 @@ class Form extends Component {
    }
    
    _serchInfo() {
-      axios.get('http://localhost:3000/importants')
+      axios.get('http://localhost:3004/importants')
          .then(resp => {
             this.setState({infoCarros: resp.data})
             this.addInfoCard()
@@ -27,7 +29,7 @@ class Form extends Component {
    }
 
    _postInfo(carro) {
-      axios.post('http://localhost:3000/importants', carro)
+      axios.post('http://localhost:3004/importants', carro)
          .then(resp => this._serchInfo())
          .catch(error => console.log (error))
    }
@@ -46,7 +48,6 @@ class Form extends Component {
    }
 
    _hendleSubmit(event) {
-      event.preventDefault();
       let carro = {
          title: this.state.title,
          description: this.state.description,
@@ -55,8 +56,14 @@ class Form extends Component {
    }
 
    handleDelete(id) {
-      axios.delete( 'http://localhost:3000/importants/' + id)
+      axios.delete( 'http://localhost:3004/importants/' + id)
           .then(resp => this._serchInfo())
+  }
+
+  hendleKey(event) {
+     if(event.key === 'Enter'){
+         this._hendleSubmit()
+     }
   }
 
    render() {
@@ -64,19 +71,21 @@ class Form extends Component {
       const { title, description } = this.state
       return (
          <Fragment>
-            <form onSubmit={this._hendleSubmit.bind(this)}>
+            <form onSubmit={this._hendleSubmit}>
                <div className="input-group mb-3" >
                   <div className="input-group-prepend">
-                     <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={this._hendleSubmit.bind(this)}>Botão</button>
+                     <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={this._hendleSubmit}>Botão</button>
                   </div>
                   <div>
                      <input type="text" key="title" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"
                         name="title"
+                        onKeyUp={this.hendleKey}
                         onChange={this._handleChange.bind(this)}
                         value={title}
                       />
                      <input type="text" key="description" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"
                         name="description"
+                        onKeyUp={this.hendleKey}
                         onChange={this._handleChange.bind(this)}
                         values={description}
                       />
