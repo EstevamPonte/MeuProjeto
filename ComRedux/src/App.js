@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Form from './form/Form'
 
@@ -17,9 +17,9 @@ class App extends Component {
 
   render() {
     return (
-    <Fragment>
+    <div className='container'>
       <Form addInfo={this._addInfo.bind(this)}/>
-    </Fragment>
+    </div>
     );
   }
 }

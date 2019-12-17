@@ -1,27 +1,32 @@
 import React, { Component, Fragment } from 'react';
 
-class MyCard extends Component {
-    
+import { deleteCard } from '../form/formActions'
+import { connect } from 'react-redux'
 
-    removendo(event) {
-        event.preventDefault();
-        this.props.onDelete(this.props.id) 
-    }
+import { bindActionCreators } from 'redux'
+
+class MyCard extends Component {
+
 
     render() {
         return (
+            
             <Fragment>
-                <div className="card border-secondary mb-3" style={{maxwidth: '18rem'}}>
-                <div className="card-header">Header</div>
-                    <div className="card-body text-secondary">
-                        <h5 className="card-title" name="title">{this.props.title}</h5>
-                        <p className="card-text" name="description">{this.props.description}</p>
-                        <button type="button" className="btn btn-danger" onClick={this.removendo.bind(this)}>Remover</button>
-                    </div>
-                    </div>
+                {this.props.infoCarros.map(carro => 
+                    <div className="card border-secondary mb-3" key={carro.id} style={{maxwidth: '18rem'}}>
+                    <div className="card-header">Header</div>
+                        <div className="card-body text-secondary">
+                            <h5 className="card-title" name="title">{carro.title}</h5>
+                            <p className="card-text" name="description">{carro.description}</p>
+                            <button type="button" className="btn btn-danger" onClick={() => this.props.deleteCard(carro.id)}>Remover</button>
+                        </div>
+                </div>
+                )}
             </Fragment>
         );
     }
 }
+const mapStateToProps = state => ({infoCarros: state.form.infoCarros,})
+const mapDispatchToProps = dispatch => bindActionCreators({ deleteCard }, dispatch)
 
-export default MyCard;
+export default connect(mapStateToProps, mapDispatchToProps)(MyCard)
